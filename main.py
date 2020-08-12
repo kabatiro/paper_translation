@@ -4,13 +4,28 @@ sys.path.append('/Users/mkabsta/.pyenv/versions/3.6.5/lib/python3.6/site-package
 from selenium import webdriver
 import pyperclip
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import time
 
 def get_text(url, xpath):
     driver.get(url)
-    abst = driver.find_element_by_xpath(xpath).text + "\nポテトト"
+    driver.implicitly_wait(10)
+    abst = driver.find_elements_by_xpath("//*[@id='abspara0010']").text + "\nポテトト"
     pyperclip.copy(abst)
     return abst
+
+def get_h2(url):
+    driver.get(url)
+    wait = WebDriverWait(driver, 100)
+    wait.until(EC.visibility_of_element_located((By.ID, "body")))
+    time.sleep(5)
+    h2_list = driver.find_elements_by_tag_name("h2")
+    h2_list_text = []
+    for h2_item in h2_list:
+        h2_list_text.append(h2_item.text)
+    return h2_list_text
 
 
 def translate():
@@ -42,6 +57,8 @@ if __name__ == "__main__":
     driver = webdriver.Chrome('/Users/mkabsta/Documents/programming/python/Selenium/chromedriver')
     paper_url = "https://www.sciencedirect.com/science/article/abs/pii/S0376042119300302"
     abst_xpath = '//*[@id="abspara0010"]'
-    get_text(paper_url, abst_xpath)
+    print(get_text(paper_url, abst_xpath))
     abst_text_en = translate()
     print(abst_text_en)
+
+
