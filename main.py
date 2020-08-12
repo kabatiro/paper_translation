@@ -12,7 +12,7 @@ import time
 def get_text(url, xpath):
     driver.get(url)
     driver.implicitly_wait(10)
-    abst = driver.find_elements_by_xpath("//*[@id='abspara0010']").text + "\nポテトト"
+    abst = driver.find_element_by_xpath(xpath).text + "\nポテトト"
     pyperclip.copy(abst)
     return abst
 
@@ -55,10 +55,9 @@ if __name__ == "__main__":
     driver = webdriver.Chrome('/Users/mkabsta/Documents/programming/python/Selenium/chromedriver', options=options)
     """
     driver = webdriver.Chrome('/Users/mkabsta/Documents/programming/python/Selenium/chromedriver')
-    paper_url = "https://www.sciencedirect.com/science/article/abs/pii/S0376042119300302"
+    paper_url = "https://www.sciencedirect.com/science/article/pii/S0376042114000347"
     abst_xpath = '//*[@id="abspara0010"]'
-    print(get_text(paper_url, abst_xpath))
-    abst_text_en = translate()
-    print(abst_text_en)
-
-
+    #print(get_text(paper_url, abst_xpath))
+    #abst_text_en = translate()
+    #print(abst_text_en)
+    print(get_h2(paper_url))
