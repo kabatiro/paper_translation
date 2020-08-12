@@ -8,18 +8,28 @@ import time
 
 def get_text(url, xpath):
     driver.get(url)
-    abst = driver.find_element_by_xpath(xpath).text
+    abst = driver.find_element_by_xpath(xpath).text + "\nポテトト"
     pyperclip.copy(abst)
     return abst
 
 
-
 def translate():
+    driver.execute_script("window.open()")
+    driver.switch_to.window(driver.window_handles[1])
     driver.get("https://www.deepl.com/translator")
     driver.find_element_by_xpath("//*[@id='dl_translator']/div[1]/div[3]/div[2]/div/textarea").send_keys(Keys.SHIFT, Keys.INSERT)
-    time.sleep(10)
     text_en = driver.find_element_by_xpath("//*[@id='dl_translator']/div[1]/div[4]/div[3]/div[1]/textarea").get_attribute('value')
-    return text_en
+    t0 = time.time()
+    for i in range(100):
+        text_en = driver.find_element_by_xpath(
+            "//*[@id='dl_translator']/div[1]/div[4]/div[3]/div[1]/textarea").get_attribute('value')
+        if text_en[-4:-1]=='ポテト':
+            break
+        time.sleep(1)
+    translate_time = time.time() - t0
+    print('翻訳時間は{}秒'.format(round(translate_time, 1)))
+    text_en = text_en.rstrip('ポテト').rstrip()
+    return repr(text_en)
 
 
 
